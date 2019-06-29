@@ -1,0 +1,22 @@
+{
+  "name": "cuongpm/uploader",
+  "license": "MIT",
+  "type": "library",
+  "keywords": [ "bug", "crud", "file", "notification", "exception", "html", "mail", "text", "javascript", "laravel"],
+  "authors": [
+    {
+      "name": "Fight Light Diamond",
+      "email": "i.am.m.cuong@gmail.com",
+      "homepage": "http://cuongpm.portalbeanzvn.com/"
+    }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Bugger\\": "./src"
+    }
+  },
+  "require": {
+    "intervention/image": "^2.3"
+  }
+}
