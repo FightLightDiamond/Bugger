@@ -1,5 +1,5 @@
 {
-  "name": "cuongpm/uploader",
+  "name": "cuongpm/bugger",
   "license": "MIT",
   "type": "library",
   "keywords": [ "bug", "crud", "file", "notification", "exception", "html", "mail", "text", "javascript", "laravel"],

@@ -1,4 +1,4 @@
-# Uploader
+# Bugger
 This package makes it easy to build project
 
 ## Postcardware
