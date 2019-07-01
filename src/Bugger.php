@@ -6,7 +6,7 @@
  * Time: 11:06 PM
  */
 
-namespace Bugger\Utils;
+namespace Bugger;
 
 
 use Bugger\Events\ExceptionEvent;

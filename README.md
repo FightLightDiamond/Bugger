@@ -11,7 +11,7 @@ You're free to use this package (it's MIT-licensed), but if it makes it to your 
 
 ## Install
 You can install the package via composer:
-`composer require cuongpm/uploader`
+`composer require cuongpm/bugger`
 
 ## Usage
 The service provider will automatically get registered. Or you may manually add the service provider in your config/app.php file:
@@ -19,7 +19,7 @@ The service provider will automatically get registered. Or you may manually add 
 ```
 'providers' => [
     // ...
-    Uploader\UploaderServiceProvider::class,
+    Bugger\BuggerServiceProvider::class,
 ];
 ```
 
@@ -28,52 +28,20 @@ You can publish the migration with:
 php artisan vendor:publish
 ```
 
-Command config upload: 
- ```angular2html
-php artisan maker:uploader NameUpload
- ```
-## Example for user
-Config upload
+Call to send mail. At App\Exceptions\Handler.php, function render 
 ```angular2html
-namespace App\Uploads;
 
-
-use Uploader\UploadModel;
-
-class UserUpload extends UploadModel
+public function render($request, Exception $exception)
 {
-  // 0 => file, 1 =>images
-    public $fileUpload = ['avatar' => 1];
+    $subject = $exception->getMessage();
+    $exceptionHtml = ($this->toIlluminateResponse(
+                    $this->convertExceptionToResponse($exception), $exception
+                ))->getContent();
+    $to = 'admin@gmail.com';
+                
+    Bugger::sendMailErrorSever($subject, $exceptionHtml, $to)
     
-  // path for upload
-
-    public $pathUpload = ['avatar' => '/images/users'];
-    
-  // thumb for images
-    public $thumbImage = [
-        'avatar' => [
-        // thumbs size
-            '/thumbs/' => [
-                [200, 200], [300, 300], [400, 400]
-            ]
-        ]
-    ];
+    return parent::render($request, $exception);
 }
-```
-User register upload User.php
- ```angular2html
-use UploadAble;
-  
- public function modelUploader()
-{
-    return UserUpload::class;
-}
-```
 
-Upload for config register
-
-```
-$input = request()->all();
-$user = User::first();
-$user->uploader($input);
 ```
