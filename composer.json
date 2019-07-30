@@ -17,6 +17,6 @@
     }
   },
   "require": {
-    "intervention/image": "^2.3"
+
   }
 }

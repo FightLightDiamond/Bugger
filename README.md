@@ -28,20 +28,34 @@ You can publish the migration with:
 php artisan vendor:publish
 ```
 
+Config email at `bugger.php`
+```angular2html
+return [
+    	/*
+    	 * Disable when bug mail
+    	 */
+        'disable_time' => 600,
+    	
+    	/*
+    	 * Mail default to notification
+    	 */
+        'mail_default' => 'i.am.m.cuong@gmail.com',
+    	
+    	/*
+    	 * Notify when env
+    	 */
+        'env' => 'production',
+];
+```
+
 Call to send mail. At App\Exceptions\Handler.php, function render 
 ```angular2html
 
 public function render($request, Exception $exception)
-{
-    $subject = $exception->getMessage();
-    $exceptionHtml = ($this->toIlluminateResponse(
-                    $this->convertExceptionToResponse($exception), $exception
-                ))->getContent();
-    $to = 'admin@gmail.com';
-                
-    Bugger::sendMailErrorSever($subject, $exceptionHtml, $to)
+{              
+    Bugger::notification($exception, $this->renderExceptionWithSymfony($exception, true));
     
-    return parent::render($request, $exception);
+    // do something
 }
 
 ```
