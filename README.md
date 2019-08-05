@@ -53,7 +53,7 @@ Call to send mail. At App\Exceptions\Handler.php, function render
 
 public function render($request, Exception $exception)
 {              
-    Bugger::notification($exception, $this->renderExceptionWithSymfony($exception, true));
+    BuggerFa::notification($exception, $this->renderExceptionWithSymfony($exception, true));
     
     // do something
 }
