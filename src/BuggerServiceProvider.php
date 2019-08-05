@@ -16,9 +16,12 @@ class BuggerServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__ . '/resources/views', 'bug');
         $this->mergeConfigFrom(__DIR__ . '/../config/bugger.php', 'bugger');
 	    $this->loadViewsFrom(__DIR__ . '/../resources/views', 'bug');
+
+        $this->publishes([
+            __DIR__ . '/../config/bugger.php' => config_path('bugger.php'),
+        ]);
     }
 
     public function register()
