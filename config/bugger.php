@@ -14,10 +14,16 @@ return [
 	/*
 	 * Mail default to notification
 	 */
-    'mail_default' => 'i.am.m.cuong@gmail.com',
+    'mail_default' => 'xxx@gmail.com',
 
 	/*
 	 * Notify when env
 	 */
     'env' => 'production',
+
+    /*
+     * Send when queue fail
+     */
+
+    'queue' => true
 ];

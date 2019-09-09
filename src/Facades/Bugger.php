@@ -15,46 +15,47 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\Debug\Exception\FlattenException;
+use Symfony\Component\Debug\ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
-class Bugger
+class Bugger extends BaseBugger
 {
-	public function notification($exception, $exceptionHtml)
-	{
-		try {
-			if ($this->isSend($exception)) {
-				$this->sendMailErrorSever($exception->getMessage(), $exceptionHtml);
-			}
-		} catch (\Exception $exception) {
-			Cache::put('disable_exception_mail', 'yes', config('bugger.disable_time'));
-		}
-	}
+    public function notification($exception)
+    {
+        try {
+            $exceptionHtml = (new ExceptionHandler(true))->getHtml(
+                FlattenException::create($exception)
+            );
 
-	protected function isSend($exception)
-	{
-		return config('app.env') === config('bugger.env')
-			&& Cache::get('disable_exception_mail') !== 'yes'
-			&& !$exception instanceof HttpResponseException
-			&& !$exception instanceof AuthenticationException
-			&& !$exception instanceof AuthorizationException
-			&& !$exception instanceof TokenMismatchException
-			&& !$exception instanceof ValidationException;
-	}
+            $title = $exception->getMessage();
 
-	protected function getEmail()
-	{
-		return config('bugger.mail_default');
-	}
+            if ($this->isSend($exception)) {
+                $this->send($title, $exceptionHtml);
+            }
+        } catch (\Exception $exception) {
+            Cache::put('disable_exception_mail', 'yes', config('bugger.disable_time'));
+        }
+    }
 
-	public function sendMailErrorSever($subject, $html)
-	{
-		$to = $this->getEmail();
+    protected function isSend($exception)
+    {
+        return config('app.env') === config('bugger.env')
+            && Cache::get('disable_exception_mail') !== 'yes'
+            && !$exception instanceof HttpException
+            && !$exception instanceof MethodNotAllowedHttpException
+            && !$exception instanceof HttpResponseException
+            && !$exception instanceof AuthenticationException
+            && !$exception instanceof AuthorizationException
+            && !$exception instanceof TokenMismatchException
+            && !$exception instanceof UnauthorizedHttpException
+            && !$exception instanceof ValidationException;
+    }
 
-		if($to) {
-			$data['subject'] = $subject;
-			$data['content'] = $html;
-			$data['to'] = $to;
-
-			event(new ExceptionEvent($data));
-		}
-	}
+    protected function getEmail()
+    {
+        return explode('|', config('bugger.mail_default'));
+    }
 }

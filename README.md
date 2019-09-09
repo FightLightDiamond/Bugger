@@ -45,6 +45,12 @@ return [
     	 * Notify when env
     	 */
         'env' => 'production',
+        
+        /*
+         * Send when queue fail
+         */
+            
+        'queue' => true
 ];
 ```
 
@@ -53,7 +59,7 @@ Call to send mail. At App\Exceptions\Handler.php, function render
 
 public function render($request, Exception $exception)
 {              
-    BuggerFa::notification($exception, $this->renderExceptionWithSymfony($exception, true));
+    BuggerFa::notification($exception);
     
     // do something
 }
