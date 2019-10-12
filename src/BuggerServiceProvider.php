@@ -28,7 +28,6 @@ class BuggerServiceProvider extends ServiceProvider
     {
         $this->app->register(EventBuggerServiceProvider::class);
         $this->app->bind('BuggerFa', Bugger::class);
-
-        $this->app->alias( BuggerFa::class, 'BuggerFa');
+        $this->app->alias( 'Bugger', BuggerFa::class);
     }
 }
